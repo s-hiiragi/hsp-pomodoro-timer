@@ -1,0 +1,47 @@
+	#include "hsp3util.as"
+
+	#module pomodoro
+
+	#deffunc get_pomodoro_period var begin_minutes, var end_minutes
+	hours = gettime(4)
+	minutes = gettime(5)
+
+	m = minutes \ 30
+	if (0 <= m && m < 25) {
+		is_worktime = 1
+		begin_minutes = (minutes / 30) * 30
+		end_minutes = begin_minutes + 25
+	} else {
+		is_worktime = 0
+		begin_minutes = (minutes / 30) * 30 + 25
+		end_minutes = begin_minutes + 5
+	}
+	return is_worktime
+
+	#global
+
+	#const main_width  180
+	#const main_height 20
+
+	screen 0, main_width, main_height, 4|8, ginfo_dispx - main_width - 5, 0
+	title "Pomodoro Timer"
+	gsel 0, 2
+
+*main_loop
+
+	gettimestr hms
+	hours = gettime(4)
+	get_pomodoro_period begin_minutes, end_minutes
+	is_worktime = stat
+
+	cls 4
+	if (is_worktime) {
+		color 255, 255, 0
+	} else {
+		color 0, 255, 0
+	}
+	pos 0, 0
+	mes strf("%s (%02d:%02d-%02d:%02d)", hms, hours, begin_minutes, hours, end_minutes)
+
+	wait 100
+	goto *main_loop
