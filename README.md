@@ -1,4 +1,4 @@
-# Pomodoro Timer (written by HSP)
+# Pomodoro Timer (written in HSP)
 
 HSPで書かれたシンプルなPomodoro Timer(GUI)です。
 
